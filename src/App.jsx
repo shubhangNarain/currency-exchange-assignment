@@ -8,24 +8,25 @@ function App() {
 
   const currencies = ["EUR", "USD", "INR", "AUD"];
 
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState("EUR");
+  const [to, setTo] = useState("USD");
+  const [amount, setAmount] = useState(0)
 
-  // eurusd = eurusd + eurusd * random * 0.03
-
-  const exchangeRate = Math.random * 0.03;
+  const exchangeRate = (Math.random * 6) - 3;
 
   useEffect(() => {
     setTimeout(() => {
-      setEurUsd(eurUsd + eurUsd * exchangeRate);
-      setUsdInr(usdInr + usdInr * exchangeRate);
-      setAudUsd(audUsd + audUsd * exchangeRate);
+      setEurUsd(eurUsd + eurUsd * exchangeRate.toFixed(2));
+      // setUsdInr(usdInr + usdInr * exchangeRate.to);
+      // setAudUsd(audUsd + audUsd * exchangeRate);
     }, 1000);
-  }, [eurUsd, usdInr, audUsd]);
+  }, [eurUsd]);
 
+  var convertedAmount
 
   const handleExchange = () => {
-
+    convertedAmount = amount * to / from;
+    console.log("Converted:",convertedAmount);
   }
 
   return (
@@ -76,7 +77,7 @@ function App() {
         <div className="flex items-center justify-center">
           <div className="rounded-xl h-[500px] w-[500px] flex flex-col bg-gray-300">
             <div className="p-12">Currency converter</div>
-            <div className="px-12">
+            <div className="px-8">
               <div className="p-2">
                 <select value={from} onChange={(e) => setFrom(e.target.value)}>
                   {currencies.map((currency) => (
@@ -97,10 +98,13 @@ function App() {
                   {console.log("To", to)}
                 </select>
               </div>
-
-              <input className="w-full h-8 p-2" placeholder="Amount"/>
-
+              
               <div>Amount:</div>
+              <input value={amount} onChange={e => setAmount(e.target.value)} className="w-full h-8 p-2" placeholder="Amount"/>
+              {console.log(amount)}
+
+
+              <div className="p-5 rounded-md bg-gray-600 h-16">Estimated converted amount: {convertedAmount || 0}</div>
 
               <button
                 type="button"
