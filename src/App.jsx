@@ -11,23 +11,31 @@ function App() {
   const [from, setFrom] = useState("EUR");
   const [to, setTo] = useState("USD");
   const [amount, setAmount] = useState(0);
-  // const [exchangeRate, setExchangeRate] = useState(0);
-  var exchangeRate = 0;
+  // var exchangeRate = 0;
   // const exchangeRate = (Math.random * 6) - 3;
 
-  const fluctation = () => {
-    exchangeRate = exchangeRate + Math.random * 6 - 3;
-  };
+  function getFluctuation(){
+    const max = 0.03
+    const min = -0.03;
+    return Math.random() * (max - min) + min; 
+  }
+
+  function updateExchangeRate(){
+    const flux = getFluctuation();
+    setEurUsd((eurUsd * (1 + flux)).toFixed(2));
+    setUsdInr((usdInr * (1 + flux)).toFixed(2));
+    setAudUsd((audUsd * (1 + flux)).toFixed(2));
+    console.log({eurUsd, usdInr, audUsd, flux});
+  }
+
+  // setInterval(updateExchangeRate, 1000);
 
   useEffect(() => {
     setTimeout(() => {
-      setEurUsd(eurUsd + eurUsd * exchangeRate.toFixed(2));
-      setUsdInr(usdInr + usdInr * 0.1);
-      setAudUsd(audUsd + audUsd * 0.1);
-      // fluctation();
+      updateExchangeRate()
     }, 1000);
-    console.log({ usdInr, eurUsd, audUsd, exchangeRate });
-  }, [eurUsd, exchangeRate, usdInr, audUsd]);
+    console.log({ usdInr, eurUsd, audUsd});
+  }, [eurUsd, usdInr, audUsd]);
 
   var convertedAmount;
 
@@ -48,8 +56,8 @@ function App() {
 
   return (
     <>
-      <div className="h-screen w-screen grid grid-cols-2">
-        <div className="flex items-center justify-center">
+      <div className="h-screen grid md:grid-cols-2">
+        <div className="p-5 flex items-center justify-center">
           <div className="rounded-xl h-[500px] w-[500px] flex bg-blue-900">
             <div className="w-full flex flex-col">
               <h1 className="pt-12 p-5 font-bold text-2xl">Markets</h1>
