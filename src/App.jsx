@@ -11,46 +11,43 @@ function App() {
   const [from, setFrom] = useState("EUR");
   const [to, setTo] = useState("USD");
   const [amount, setAmount] = useState(0);
-  // var exchangeRate = 0;
-  // const exchangeRate = (Math.random * 6) - 3;
 
-  function getFluctuation(){
-    const max = 0.03
+  const getFluctuation = () => {
+    const max = 0.03;
     const min = -0.03;
-    return Math.random() * (max - min) + min; 
+    return Math.random() * (max - min) + min;
   }
 
-  function updateExchangeRate(){
+  const updateExchangeRate = () => {
     const flux = getFluctuation();
     setEurUsd((eurUsd * (1 + flux)).toFixed(2));
     setUsdInr((usdInr * (1 + flux)).toFixed(2));
     setAudUsd((audUsd * (1 + flux)).toFixed(2));
-    console.log({eurUsd, usdInr, audUsd, flux});
+    console.log({ eurUsd, usdInr, audUsd, flux });
   }
-
-  // setInterval(updateExchangeRate, 1000);
 
   useEffect(() => {
     setTimeout(() => {
-      updateExchangeRate()
+      updateExchangeRate();
     }, 1000);
-    console.log({ usdInr, eurUsd, audUsd});
+    console.log({ usdInr, eurUsd, audUsd });
   }, [eurUsd, usdInr, audUsd]);
 
-  var convertedAmount;
+  const [convertedAmount, setConvertedAmount] = useState(0);
 
   const handleExchange = () => {
     if (from === "USD" && to === "INR") {
-      convertedAmount = amount * usdInr;
+      setConvertedAmount((amount * usdInr).toFixed(2));
     }
-    if (from === "EUR" && to === "USD") {
-      convertedAmount = amount * eurUsd;
+    else if (from === "EUR" && to === "USD") {
+      setConvertedAmount((amount * eurUsd).toFixed(2));
     }
-    if (from === "AUD" && to === "USD") {
-      convertedAmount = amount * audUsd;
+    else if (from === "AUD" && to === "USD") {
+      setConvertedAmount((amount * audUsd).toFixed(2));
     }
-    if (amount === 0) convertedAmount = 0;
-    else alert("Invalid conversion Currencies");
+    else{
+      alert("Wrong Currency selection")
+    }
     console.log("Converted:", convertedAmount);
   };
 
@@ -135,23 +132,22 @@ function App() {
                   className="w-full h-8 p-2"
                   placeholder="Amount"
                 />
-                {console.log(amount)}
               </div>
 
               <div className="p-2">
-              <div className="p-5 rounded-md bg-gray-600 h-16">
-                Estimated converted amount: {convertedAmount}
-              </div>
+                <div className="p-5 rounded-md bg-gray-600 h-16">
+                  Estimated converted amount: {convertedAmount}
+                </div>
               </div>
 
               <div className="p-2">
-              <button
-                type="button"
-                className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                onClick={handleExchange}
-              >
-                Exchange
-              </button>
+                <button
+                  type="button"
+                  className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  onClick={handleExchange}
+                >
+                  Exchange
+                </button>
               </div>
             </div>
           </div>
