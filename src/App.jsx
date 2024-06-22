@@ -36,7 +36,8 @@ function App() {
   const [convertedAmount, setConvertedAmount] = useState(0);
 
   const handleExchange = () => {
-    if (from === "USD" && to === "INR") {
+    if(from === to) setConvertedAmount(amount);
+    else if (from === "USD" && to === "INR") {
       setConvertedAmount((amount * usdInr).toFixed(2));
     }
     else if (from === "EUR" && to === "USD") {
@@ -44,6 +45,33 @@ function App() {
     }
     else if (from === "AUD" && to === "USD") {
       setConvertedAmount((amount * audUsd).toFixed(2));
+    }
+    else if(from === "EUR" && to === "INR"){
+      setConvertedAmount((amount * eurUsd * usdInr).toFixed(2));
+    }
+    else if(from === "AUD" && to === "INR"){
+      setConvertedAmount((amount * audUsd * usdInr).toFixed(2));
+    }
+    else if(from === "EUR" && to === "AUD"){
+      setConvertedAmount((amount * eurUsd / audUsd).toFixed(2));
+    }
+    else if (from === "USD" && to === "EUR") {
+      setConvertedAmount((amount * 1 / eurUsd).toFixed(2));
+    }
+    else if (from === "INR" && to === "USD") {
+      setConvertedAmount((amount * 1 / usdInr).toFixed(2));
+    }
+    else if (from === "USD" && to === "AUD") {
+      setConvertedAmount((amount * 1 / audUsd).toFixed(2));
+    }
+    else if (from === "INR" && to === "AUD") {
+      setConvertedAmount((amount * 1 / audUsd * 1 /usdInr).toFixed(2));
+    }
+    else if (from === "INR" && to === "EUR") {
+      setConvertedAmount((amount * 1 / eurUsd * 1 / usdInr).toFixed(2));
+    }
+    else if (from === "AUD" && to === "EUR") {
+      setConvertedAmount((amount * audUsd / eurUsd).toFixed(2));
     }
     else{
       alert("Wrong Currency selection")
